@@ -1,5 +1,4 @@
 /* Responsive container of the svg element */
-
 .responsive-svg-container {
     width: 100%;
     max-width: 1000px;
@@ -17,6 +16,5 @@
     fill: #5a3e2b;
     /* Dark brown */
 }
-
 
 /* Code based on Dufour and Meeks (2024) */
