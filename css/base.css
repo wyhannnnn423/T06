@@ -1,4 +1,5 @@
 /* Main site stylesheet — layout, typography and theme colors */
+
 :root {
     --accent: #c65a20;
     /* warm orange */
@@ -12,7 +13,9 @@
     --radius: 8px;
 }
 
+
 /* Page reset and basic typography */
+
 html,
 body {
     height: 100%;
@@ -37,7 +40,9 @@ a:hover {
     text-decoration: underline;
 }
 
+
 /* Header */
+
 header {
     background: var(--accent);
     color: white;
@@ -51,7 +56,9 @@ header h1 {
     font-weight: 700;
 }
 
+
 /* Main content area */
+
 main {
     padding: 28px 24px;
 }
@@ -85,7 +92,9 @@ p {
     color: #3f2f28;
 }
 
+
 /* Filters/buttons */
+
 #filters_screen {
     display: flex;
     gap: 12px;
@@ -93,7 +102,9 @@ p {
     margin: 14px 0 18px 0;
 }
 
+
 /* Filter buttons — use classes so we can toggle active state */
+
 #filters_screen .filter {
     border: none;
     background: var(--accent);
@@ -106,7 +117,9 @@ p {
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
+
 /* Active filter: pale background, dark text */
+
 #filters_screen .filter.active {
     background: #f3d9b9;
     /* pale/light orange */
@@ -117,14 +130,18 @@ p {
     outline: 2px solid rgba(0, 0, 0, 0.08);
 }
 
+
 /* Chart container - keep a little spacing */
+
 .responsive-svg-container {
     width: 100%;
     max-width: 1000px;
     margin-bottom: 28px;
 }
 
+
 /* Data source note */
+
 .body {
     margin-top: 10px;
     color: #3f2f28;
@@ -135,7 +152,9 @@ p {
     font-weight: 600;
 }
 
+
 /* Footer */
+
 footer {
     background: #5a3e2b;
     /* dark brown */
@@ -150,7 +169,9 @@ footer p {
     font-size: 14px;
 }
 
+
 /* Small utility */
+
 .lead {
     font-size: 16px;
     color: #4a362e;
@@ -160,12 +181,45 @@ footer p {
     header h1 {
         font-size: 20px;
     }
-
     main {
         padding: 18px 14px;
     }
-
     #filters_screen button {
         padding: 8px 10px;
     }
+}
+
+
+/* Responsive container of the svg element */
+
+.responsive-svg-container {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (min-width: 900px) {
+    .responsive-svg-container {
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Button styles for filters */
+
+#filters_screen button {
+    background-color: #fce4ce;
+    color: #e06d06;
+    border: 1px solid #e06d06;
+    padding: 5px 15px;
+    margin: 5px 5px 20px 0;
+    cursor: pointer;
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+#filters_screen button.active {
+    background-color: #e06d06;
+    /* Dark Orange */
+    color: white;
 }

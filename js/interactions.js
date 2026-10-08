@@ -1,55 +1,60 @@
-// Build the screen-technology buttons and connect them to histogram filtering.
 const populateFilters = (data) => {
     // Step 7.3 Set up buttons and event listeners
-    
-};
+    const buttonPanel = d3.select("#filters_screen"); // 适配你的 template ID
 
-const updateHistogram = (filterId, data) => {
-    // Step 7.4 Update the histogram
+    const buttons = buttonPanel.selectAll("button")
+        .data(filters_screen)
+        .join("button")
+        .text(d => d.label)
+        .attr("class", d => d.isActive ? "active" : "") // Attach class "active"
+        .on("click", function(event, d) {
+            // Update active state
+            filters_screen.forEach(f => f.isActive = false);
+            d.isActive = true;
 
-};
+            // Update button visual classes
+            buttons.attr("class", f => f.isActive ? "active" : "");
 
-// T06-2 Step 3: Creating a tooltip and adding function call to load-data.js
-const createTooltip = () => {
-    // Step 3.2 Append (a hidden) tooltip to innerChart
-
-    // Step 3.3 Append tooltip background rectangle
-
-    // Step 3.4 Apped tooltip text
-
-};
-
-// T06-2 Step 3.5 Add functions to react to mouse events
-const handleMouseEvents = () => {
-    const tooltip = innerChartS.select(".tooltip");
-
-    // Step 3.6 Select all circles in scatter plot
-    // Step 3.7 Attach event listeners to mouseenter and mouseleave events
-    innerChartS.selectAll("circle")
-        .on("mouseenter", (e, d) => {
-            tooltip.select("text")
-                .text(`${d.screenSize} inches`);
-
-            // Get the hovered circle's position
-            const cx = +e.target.getAttribute("cx");
-            const cy = +e.target.getAttribute("cy");
-
-            // Centre the tooltip above the circle
-            tooltip
-                .interrupt()
-                .attr(
-                    "transform",
-                    `translate(${cx - 0.5 * tooltipWidth},
-                               ${cy - 1.5 * tooltipHeight})`
-                )
-                .transition()
-                .duration(200)
-                .style("opacity", 1);
-        })
-        .on("mouseleave", () => {
-            tooltip
-                .interrupt()
-                .style("opacity", 0)
-                .attr("transform", "translate(0, 500)");
+            // Pass the id and data to update function
+            updateHistogram(d.id, data);
         });
+
+    // Step 7.4 Update the histogram
+    const updateHistogram = (filterId, originalData) => {
+        let updatedData = originalData;
+
+        // Filter based on screen tech
+        if (filterId !== "all") {
+            updatedData = originalData.filter(d => d.screenTech === filterId);
+        }
+
+        // Use filtered data to update the bins
+        const updatedBins = binGenerator(updatedData);
+
+        // Update Y scale
+        const maxCount = d3.max(updatedBins, d => d.length);
+        yScale.domain([0, maxCount]);
+
+        const innerChart = d3.select("#histogram g");
+
+        // Transition Y axis
+        innerChart.select(".y-axis")
+            .transition()
+            .duration(500)
+            .call(d3.axisLeft(yScale));
+
+        // Draw histogram rectangles and apply transitions
+        innerChart.selectAll("rect")
+            .data(updatedBins)
+            .join("rect")
+            .transition()
+            .duration(500)
+            .attr("x", d => xScale(d.x0) + 1)
+            .attr("y", d => yScale(d.length))
+            .attr("width", d => Math.max(0, xScale(d.x1) - xScale(d.x0) - 1))
+            .attr("height", d => innerHeight - yScale(d.length))
+            .attr("fill", BarColor)
+            .attr("stroke", bodyBackgroundColor)
+            .attr("stroke-width", 1);
+    };
 };
